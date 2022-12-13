@@ -1,0 +1,14 @@
+FROM debian:buster
+
+RUN apt update -y \
+&& apt install mariadb-server -y
+
+COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+
+COPY ./tools/config.sql /home/tools/config.sql
+
+RUN service mysql restart
+
+RUN service mysql start && mysql < /home/tools/config.sql
+
+CMD ["mysqld"]

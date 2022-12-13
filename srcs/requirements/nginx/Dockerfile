@@ -1,11 +1,13 @@
-FROM debian
+FROM debian:buster
 
-RUN apt-get -y update \
-&& apt-get -y install nginx
+RUN apt update -y \
+&& apt install nginx -y
 
-COPY  ./conf/nginx.conf /etc/nginx
+COPY  ./conf/nginx.conf /etc/nginx/nginx.conf
 
 COPY ./test /home/test
+
+COPY ./tools/sslCert /home/sslCert
 
 CMD ["/usr/sbin/nginx", "-g", "daemon off;"]
 # CMD ["bash"]
