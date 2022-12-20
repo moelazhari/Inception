@@ -1,5 +1,7 @@
 CREATE DATABASE wp;
-SET PASSWORD FOR 'root'@'localhost' = PASSWORD('123');
-UPDATE mysql.user SET Host='%' WHERE Host='localhost' AND User='root';
+
+CREATE USER 'wpuser'@'%' IDENTIFIED BY '123';
+
+GRANT ALL ON wp.* TO 'wpuser'@'%';
 
 FLUSH PRIVILEGES;
