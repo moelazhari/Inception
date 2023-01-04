@@ -1,0 +1,27 @@
+version: '3'
+
+services:  
+  mariadb:  
+    build: ./requirements/mariadb
+    volumes:      
+      - /home/mazhari/data/mariadb:/var/lib/mysql
+    environment:      
+      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_DATABASE: mariadb         
+    restart: always
+  wordpress:
+    build: ./requirements/wordpress
+    volumes:
+      - /home/mazhari/data/wordpress:/var/www/html    
+    environment:      
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_NAME: wp
+      WORDPRESS_DB_USER: wpuser     
+      WORDPRESS_DB_PASSWORD: 123
+    restart: always
+  nginx:
+    build: ./requirements/nginx
+    ports:
+      - 443:443
+    volumes:
+      - /home/mazhari/data/wordpress:/var/www/html

@@ -1,15 +1,16 @@
 FROM debian:buster
 
 RUN apt update -y\
-    && apt install php-fpm php-cli php-mysql -y\
-    && apt install wget -y
+    && apt install curl php-fpm php-mysql mariadb-server -y 
 
-COPY ./conf /home/conf
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
 
-RUN bash < /home/conf/installwp.sh
+RUN mkdir -p /var/www/html && cd /var/www/html && wp core download --allow-root\
+    && wp core config --dbhost=mariadb --dbname=wp --dbuser=wpuser --dbpass=123  --allow-root\
+    && wp user create --user-login=larbi --user_pass=larbi123 --role=administrator --allow-root\
+    && wp user create --user-login=mazhari --user_pass=mazhari123 --role=editor --allow-root
 
-RUN cp /home/conf/www.conf /etc/php/7.3/fpm/pool.d/www.conf
+COPY ./conf/wp-config.php /etc/php/7.3/fpm/pool.d
 
-RUN cp /home/conf/wp-config.php /var/www/html/wp-config.php
 
 CMD ["bash"]
