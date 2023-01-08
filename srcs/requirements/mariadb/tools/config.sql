@@ -1,7 +1,0 @@
-CREATE DATABASE wp;
-
-CREATE USER 'wpuser'@'%' IDENTIFIED BY '123';
-
-GRANT ALL ON wp.* TO 'wpuser'@'%';
-
-FLUSH PRIVILEGES;

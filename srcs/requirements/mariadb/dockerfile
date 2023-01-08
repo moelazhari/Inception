@@ -1,14 +1,13 @@
 FROM debian:buster
 
 RUN apt update -y \
-&& apt install mariadb-server -y
+&& apt install mariadb-server -y && mysql_install_db
 
-COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+# COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
-COPY ./tools/config.sql /home/tools/config.sql
+COPY ./tools/config.sh /home/tools/config.sh
 
-RUN service mysql restart
+RUN chmod 700 /home/tools/config.sh
 
-RUN service mysql start && mysql < /home/tools/config.sql
-
-CMD ["mysqld"]
+ENTRYPOINT ["/home/tools/config.sh"]
+CMD ["mysqld", "--bind-adress=0.0.0.0"]

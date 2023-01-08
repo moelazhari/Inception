@@ -1,27 +1,40 @@
 version: '3'
 
-services:  
-  mariadb:  
+services:
+  mariadb:
+    container_name: db
     build: ./requirements/mariadb
     volumes:      
       - /home/mazhari/data/mariadb:/var/lib/mysql
-    environment:      
-      MYSQL_ROOT_PASSWORD: ""
-      MYSQL_DATABASE: mariadb         
+    env_file: .env
+    networks:
+      - web
     restart: always
   wordpress:
+    depends_on: 
+      - mariadb
+    container_name: wordpress
     build: ./requirements/wordpress
+    env_file: .env
     volumes:
-      - /home/mazhari/data/wordpress:/var/www/html    
-    environment:      
-      WORDPRESS_DB_HOST: mariadb
-      WORDPRESS_DB_NAME: wp
-      WORDPRESS_DB_USER: wpuser     
-      WORDPRESS_DB_PASSWORD: 123
+      - /home/mazhari/data/wordpress:/var/www/html
+    networks:
+      - web
     restart: always
   nginx:
+    depends_on:
+      - wordpress
+    container_name: nginx
     build: ./requirements/nginx
     ports:
       - 443:443
     volumes:
       - /home/mazhari/data/wordpress:/var/www/html
+    networks:
+      - web
+    restart: always
+
+networks:
+  web:
+    name: web
+    driver: bridge
