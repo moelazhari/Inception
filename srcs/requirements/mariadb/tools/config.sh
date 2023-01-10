@@ -9,6 +9,4 @@ mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "ALTER USER 'root'@'localhost' IDENTIF
 
 killall -9 mysqld
 
-service mysql start
-
-exec "$@"
+mysqld
