@@ -3,7 +3,7 @@ FROM debian:buster
 RUN apt update -y \
 && apt install nginx -y
 
-COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/nginx.conf /etc/nginx/
 
 COPY ./tools/sslCert /home/sslCert
 

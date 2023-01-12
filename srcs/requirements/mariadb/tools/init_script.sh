@@ -7,6 +7,6 @@ mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "CREATE USER '$WORDPRESS_DB_USER'@'%' 
 mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "GRANT ALL ON $WORDPRESS_DB_NAME.* TO '$WORDPRESS_DB_USER'@'%'; FLUSH PRIVILEGES";
 mysql -u root -p${MYSQL_ROOT_PASSWORD} -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD'; FLUSH PRIVILEGES";
 
-killall -9 mysqld
+killall -9 mysqld;
 
-mysqld
+exec "$@";

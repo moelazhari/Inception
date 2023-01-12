@@ -2,10 +2,10 @@ version: '3'
 
 services:
   mariadb:
-    container_name: db
+    container_name: mariadb
     build: ./requirements/mariadb
     volumes:      
-      - /home/mazhari/data/mariadb:/var/lib/mysql
+      - db:/var/lib/mysql
     env_file: .env
     networks:
       - web
@@ -17,7 +17,7 @@ services:
     build: ./requirements/wordpress
     env_file: .env
     volumes:
-      - /home/mazhari/data/wordpress:/var/www/html
+      - wp:/var/www/html
     networks:
       - web
     restart: always
@@ -29,7 +29,7 @@ services:
     ports:
       - 443:443
     volumes:
-      - /home/mazhari/data/wordpress:/var/www/html
+      - wp:/var/www/html
     networks:
       - web
     restart: always
@@ -38,3 +38,19 @@ networks:
   web:
     name: web
     driver: bridge
+
+volumes:
+  db:
+    name: db
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mazhari/data/db
+  wp:
+    name : wp
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/mazhari/data/wp
