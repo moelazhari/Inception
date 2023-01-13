@@ -11,4 +11,4 @@ COPY ./tools/init_script.sh .
 RUN chmod +x ./init_script.sh
 
 ENTRYPOINT ["./init_script.sh"]
-CMD ["mysqld"]
+CMD ["mysqld_sfae"]
