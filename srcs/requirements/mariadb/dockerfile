@@ -2,7 +2,7 @@ FROM debian:buster
 
 RUN apt-get -y update \
     && apt-get install -y mariadb-server \
-    && mysql_install_db 
+    && mysql_install_db
 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
 
@@ -11,4 +11,4 @@ COPY ./tools/init_script.sh .
 RUN chmod +x ./init_script.sh
 
 ENTRYPOINT ["./init_script.sh"]
-CMD ["mysqld_sfae"]
+CMD ["mysqld_safe"]

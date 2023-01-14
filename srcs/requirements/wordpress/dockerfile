@@ -4,15 +4,14 @@ RUN apt update -y\
     && apt install curl php-fpm php-mysql mariadb-client sendmail -y\
     && service php7.3-fpm start
 
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
-
-RUN mkdir -p /var/www/html && cd /var/www/html && wp core download --force --allow-root
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp \
+    && mkdir -p /var/www/html && cd /var/www/html && wp core download --force --allow-root
 
 COPY ./conf/www.conf /etc/php/7.3/fpm/pool.d 
 
 COPY ./tools/wp.sh .
 
-RUN chmod 700 ./wp.sh
+RUN chmod +x ./wp.sh
 
 entrypoint ["./wp.sh"]
-CMD ["/usr/sbin/php-fpm7.3", "--nodaemonize"]
+CMD ["/usr/sbin/php-fpm7.3", "-F"]
